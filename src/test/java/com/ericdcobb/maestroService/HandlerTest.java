@@ -1,4 +1,4 @@
-package com.ericdcobb;
+package com.ericdcobb.maestroService;
 
 import static com.google.common.io.Resources.*;
 import static org.mockito.Mockito.*;
@@ -12,11 +12,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ericdcobb.maestroService.api.Route;
+import com.ericdcobb.maestroService.services.RouteService;
 import com.google.common.io.Resources;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 /**
  *   
@@ -28,11 +29,14 @@ public class HandlerTest {
 	Handler handler;
 	ScriptEngine engine;
 	Bindings bindings;
+	RouteService routeService;
 
 	@Before
 	public void beforeEach() {
 		engine = mock(ScriptEngine.class);
-		handler = new Handler(engine);
+		routeService = mock(RouteService.class);
+
+		handler = new Handler(engine, routeService);
 
 		bindings = mock(Bindings.class);
 		when(engine.createBindings()).thenReturn(bindings);
@@ -45,6 +49,9 @@ public class HandlerTest {
 		org.eclipse.jetty.server.Request request = mock(org.eclipse.jetty.server.Request.class);
 		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
 		HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
+
+		when(routeService.getRoute("/test")).thenReturn(Route.builder().setPath("/test").addVariables("url",
+				"http://localhost:8080").setScript("prinln foo").build());
 
 		handler.handle("/test", request, httpServletRequest, httpServletResponse);
 
