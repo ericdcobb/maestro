@@ -50,8 +50,8 @@ public class HandlerTest {
 		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
 		HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
 
-		when(routeService.getRoute("/test")).thenReturn(Route.builder().setPath("/test").addVariables("url",
-				"http://localhost:8080").setScript("prinln foo").build());
+		when(routeService.getRoute("test")).thenReturn(Route.builder().setPath("/test").addVariables("url",
+				"http://localhost:8080").setScript(expectedScript).build());
 
 		handler.handle("/test", request, httpServletRequest, httpServletResponse);
 

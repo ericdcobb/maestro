@@ -4,6 +4,7 @@ import static com.google.common.io.Resources.*;
 import static java.nio.charset.Charset.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import com.ericdcobb.maestroService.services.RouteServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Server;
 
 /**
@@ -35,12 +37,21 @@ public class MaestroService
 
 		routeService.saveRoutes(
 				routeList.stream().map(
-						map -> Route.builder()
-								.setScript(map.get("script").equals("call-through") ? callThrough : map.get("script")
-										.toString()).
-								setPath(map.get("path").toString()).
-								setVariables((Map) map.get("variables")).
-								build())
+						map -> {
+							Route route = null;
+							try {
+								route = Route.builder()
+									.setScript(map.get("script").equals("call-through") ? callThrough :
+													FileUtils.readFileToString(new File(map.get("script").toString()))
+									).setPath(map.get("path").toString()).
+									setVariables((Map) map.get("variables")).
+									build();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							return route;
+						
+						})
 						.collect(Collectors.toList()).toArray(new Route[routeList.size()]));
 
 		ScriptEngineManager factory = new ScriptEngineManager();

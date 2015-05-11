@@ -20,6 +20,6 @@ public class RouteTest {
 
 		Route route = mapper.readValue(this.getClass().getResourceAsStream("/route.json"), Route.class);
 
-		Assertions.assertThat(route.path()).isEqualTo("/test");
+		Assertions.assertThat(route.path()).isEqualTo("test");
 	}
 }

@@ -16,8 +16,6 @@ def methods = ['GET': Method.GET, 'POST': Method.POST, 'PUT': Method.PUT, 'DELET
         .HEAD, 'PATCH' : 'PATCH']
 
 def sourceBody = CharStreams.toString(sourceRequest.getReader());
-println sourceBody
-println methods[sourceRequest.getMethod()]
 http.request(methods[sourceRequest.getMethod()], ContentType.TEXT) {     req ->
     uri.path = sourceRequest.getPathInfo() // overrides any path in the default URL
 
@@ -31,7 +29,6 @@ http.request(methods[sourceRequest.getMethod()], ContentType.TEXT) {     req ->
         }
     })
 
-    println headers;
 
     response.success = { resp, reader ->
         handleResponse(resp, reader)
@@ -43,7 +40,6 @@ http.request(methods[sourceRequest.getMethod()], ContentType.TEXT) {     req ->
 }
 
 private void handleResponse(resp, reader) {
-    println resp.status
     targetResponse.setStatus(resp.status)
     resp.headers.each() {
         def bh = ((BufferedHeader) it);

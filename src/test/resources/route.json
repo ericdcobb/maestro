@@ -1,1 +1,5 @@
-{"path": "/test", "variables" : { "url": "http://localhost:8080"}, "script" : "call-through"}
+{
+  "path": "test",
+  "variables": {"url": "http://localhost:8080"},
+  "script": "call-through"
+}
