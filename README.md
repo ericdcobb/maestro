@@ -1,5 +1,17 @@
 # maestro
 
+##building
+
+```
+mvn clean install
+```
+
+##running
+
+```
+java -jar target/maestro-1.0-SNAPSHOT.jar /Users/ericcobb/test.json
+```
+
 An API Gateway and orchestration layer for services.
 
 ##Goals
